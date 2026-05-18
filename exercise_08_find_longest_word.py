@@ -1,5 +1,5 @@
 # Ejercicio 8 - Palabra más larga de un archivo
-
+import os
 
 def find_longest_word(filename):
     """
@@ -27,4 +27,19 @@ def find_longest_word(filename):
         # archivo contiene: "el gato corre rapido\npor el jardin\n"
         find_longest_word("texto.txt") -> "rapido"
     """
-    pass  # Reemplazar con tu implementación
+    if not os.path.exists(filename):
+        raise FileNotFoundError
+
+    with open( file = filename, mode = 'r') as archivo:
+        max_palabra = ''
+        for linea in archivo:
+            palabras = linea.split(' ')
+            for palabra in palabras:
+                palabra = palabra.strip('\n').strip()
+                if len(palabra) > len(max_palabra):
+                    max_palabra = palabra
+
+        if len(max_palabra) == 0:
+            raise ValueError('file has no words')
+
+        return max_palabra 

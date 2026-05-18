@@ -1,5 +1,5 @@
 # Ejercicio 10 - Parser de archivos de log
-
+import os
 
 def parse_log(filename):
     """
@@ -42,4 +42,27 @@ def parse_log(filename):
             "WARN": ["lento"],
         }
     """
-    pass  # Reemplazar con tu implementación
+
+    if not os.path.exists(filename):
+        raise FileNotFoundError
+    
+
+    log = {}
+
+
+    with open(file=filename, mode='r') as archivo:
+        for linea in archivo:
+            if len(linea.strip('\n').strip())  > 0 :                   
+                if ':' not in linea:
+                    raise ValueError('Invalid log line')
+
+                nivel, mensaje = linea.strip('\n').split(':', 1)
+
+                if nivel not in log.keys():
+                    log[nivel.strip()] =  list([mensaje.strip()])
+                                        
+
+                else:
+                    log[nivel.strip()].append(mensaje.strip())
+
+    return log

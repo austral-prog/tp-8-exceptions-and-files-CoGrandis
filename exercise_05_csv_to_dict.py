@@ -1,6 +1,6 @@
 # Ejercicio 5 - CSV a lista de diccionarios
 
-
+import os
 def csv_to_dict(filename):
     """
     Lee un archivo CSV con header "name,age,city" y retorna una lista de
@@ -34,4 +34,28 @@ def csv_to_dict(filename):
             {"name": "Bob", "age": 25, "city": "Rosario"},
         ]
     """
-    pass  # Reemplazar con tu implementación
+
+
+    if not os.path.exists(filename):
+        raise FileNotFoundError
+    
+
+    lista_diccionarios = []
+    header = []
+    with open( file=filename, mode='r' ) as archivo:
+        for linea in archivo:
+            if header == [] : 
+                header = linea.strip().split(',')
+            else:
+                nombre, edad, ciudad = linea.strip().split(',')
+
+                lista_diccionarios.append({
+                    header[0] : nombre,
+                    header[1] : int(edad),
+                    header[2] : ciudad,
+
+                })
+            
+
+    return lista_diccionarios
+

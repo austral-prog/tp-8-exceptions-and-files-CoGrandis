@@ -1,5 +1,5 @@
 # Ejercicio 3 - Ventas por producto
-
+import os
 
 def read_sales(filename):
     """
@@ -31,7 +31,30 @@ def read_sales(filename):
             "producto2": [200.0],
         }
     """
-    pass  # Reemplazar con tu implementación
+
+    if not os.path.exists(filename):
+        raise FileNotFoundError
+        
+
+    diccionarios_productos = {}
+
+    with open( file=filename, mode='r' ) as archivo:
+
+        contenido = archivo.read()
+        lista_productos = contenido.strip().split(';')
+
+        lista_productos = [ item.split(':') for item in lista_productos if item != '']
+
+        for producto in lista_productos:
+            nombre, precio = producto
+
+            if nombre not in diccionarios_productos:
+                diccionarios_productos[nombre] = [float(precio)]
+            else:
+                diccionarios_productos[nombre].append(float(precio))
+
+    return diccionarios_productos
+
 
 
 def process_sales(data):
@@ -53,4 +76,14 @@ def process_sales(data):
         process_sales({"producto1": [100.0, 150.0]})
         # imprime: "producto1: ventas totales $250.00, promedio $125.00"
     """
-    pass  # Reemplazar con tu implementación
+
+    for clave, valor in data.items():
+        ventas_totales = 0
+        for item in valor:
+            ventas_totales += item
+
+        promedio = ventas_totales / len(valor)
+
+
+        print(f'{clave}: ventas totales ${ventas_totales:.2f}, promedio ${promedio:.2f}')
+
